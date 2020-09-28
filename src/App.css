@@ -1,0 +1,7 @@
+body {
+    overflow-y: scroll;
+}
+
+.content {
+    min-height: calc(100vh - 56px);
+}
