@@ -1,25 +1,18 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-class Article extends Component {
-    state = {
-        isOpen: false
+class Article extends PureComponent {
+    toggleOpen = () => {
+        this.props.toggleArticle(this.props.article.id)
     }
 
     render() {
-        const { title, text } = this.props.article
-        const { isOpen } = this.state
-
-        const toggleOpen = () => {
-            this.setState({
-                isOpen: !this.state.isOpen
-            })
-        }
-
+        const { article: {title, text}, isOpen } = this.props
+        console.log("render Article")
         return (
             <div>
                 <h3>
                     {title}
-                    <button onClick={toggleOpen}>{ isOpen ? "close" : "open" }</button>
+                    <button onClick={this.toggleOpen}>{ isOpen ? "close" : "open" }</button>
                 </h3>
                 {isOpen ? <p>{text}</p> : null}
             </div>
