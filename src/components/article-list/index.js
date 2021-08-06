@@ -3,11 +3,6 @@ import Article from "../article";
 import accordion from "../../decorators/accordion";
 
 class ArticleList extends Component {
-
-    render() {
-        return <ul>{this.articles}</ul>
-    }
-
     get articles() {
         const {openItemId, toggleOpenArticle, articles} = this.props
 
@@ -20,6 +15,10 @@ class ArticleList extends Component {
                 />
             </li>
         ))
+    }
+
+    render() {
+        return <ul>{this.articles}</ul>
     }
 }
 
