@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import toggleOpen from "../../decorators/toggleOpen";
 import Comment from "../comment";
+import PropTypes from "prop-types"
 
 class CommentList extends Component {
+    static propTypes = {
+        comments: PropTypes.array.isRequired,
+        //from decorator
+        isOpen: PropTypes.bool,
+        toggleOpenItem: PropTypes.func.isRequired
+    }
+
     render() {
         const { isOpen, toggleOpenItem } = this.props
 
@@ -11,12 +19,12 @@ class CommentList extends Component {
                 <button onClick={toggleOpenItem}>
                     {isOpen ? 'hide comments' : 'show comments'}
                 </button>
-                {isOpen ? this.body : null}
+                {isOpen ? this.getBody() : null}
             </div>
         )
     }
 
-    get body() {
+    getBody() {
         const { comments } = this.props
         const body = comments.length ? (
             <ul>
@@ -31,6 +39,8 @@ class CommentList extends Component {
         )
         return <div>{body}</div>
     }
+
+
 }
 
 export default toggleOpen(CommentList);

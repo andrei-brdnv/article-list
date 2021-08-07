@@ -2,6 +2,14 @@ import React, { PureComponent } from "react";
 import CommentList from "../comment-list";
 
 class Article extends PureComponent {
+    state = {
+        error: null
+    }
+
+    componentDidCatch(error) {
+        this.setState({error})
+    }
+
     toggleOpen = () => {
         this.props.toggleArticle(this.props.article.id)
     }
@@ -21,7 +29,7 @@ class Article extends PureComponent {
                     isOpen ?
                     <section>
                         <p>{text}</p>
-                        <CommentList comments={comments} />
+                        {this.state.error ? null : <CommentList comments={comments} />}
                     </section> : null
                 }
             </div>
