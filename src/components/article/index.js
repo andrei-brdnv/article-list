@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 import CommentList from "../comment-list";
+import { connect } from "react-redux";
+import { deleteArticle } from "../../ac";
 
 class Article extends PureComponent {
     state = {
@@ -14,6 +16,10 @@ class Article extends PureComponent {
         this.props.toggleArticle(this.props.article.id)
     }
 
+    handleDelete = () => {
+        this.props.deleteArticle(this.props.article.id)
+    }
+
     render() {
         const { article: {title, text, comments}, isOpen } = this.props
 
@@ -24,6 +30,7 @@ class Article extends PureComponent {
                 <h3>
                     {title}
                     <button onClick={this.toggleOpen}>{ isOpen ? "close" : "open" }</button>
+                    <button onClick={this.handleDelete}>Delete</button>
                 </h3>
                 {
                     isOpen ?
@@ -37,4 +44,9 @@ class Article extends PureComponent {
     }
 }
 
-export default Article
+export default connect(
+    null,
+    (dispatch) => ({
+        deleteArticle: (id) => dispatch(deleteArticle(id))
+    })
+)(Article)
