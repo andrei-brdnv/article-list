@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import toggleOpen from "../../decorators/toggleOpen";
 import Comment from "../comment";
 import PropTypes from "prop-types"
+import CommentForm from "../comment-form";
 
 class CommentList extends Component {
     static propTypes = {
-        comments: PropTypes.array.isRequired,
+        comments: PropTypes.array,
         //from decorator
         isOpen: PropTypes.bool,
         toggleOpenItem: PropTypes.func.isRequired
@@ -25,7 +26,8 @@ class CommentList extends Component {
     }
 
     getBody() {
-        const { comments } = this.props
+        const {article: { comments = [], id }} = this.props
+
         const body = comments.length ? (
             <ul>
                 {comments.map((id) => (
@@ -37,7 +39,10 @@ class CommentList extends Component {
         ) : (
             <h3>No comments yet</h3>
         )
-        return <div>{body}</div>
+        return <div>
+            <CommentForm articleId={id}/>
+            {body}
+        </div>
     }
 
 

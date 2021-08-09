@@ -1,7 +1,8 @@
 import React, { PureComponent } from "react";
 import CommentList from "../comment-list";
 import { connect } from "react-redux";
-import { deleteArticle } from "../../ac";
+import { deleteArticle, loadArticle } from "../../ac";
+import Loader from "../loader";
 
 class Article extends PureComponent {
     state = {
@@ -10,6 +11,15 @@ class Article extends PureComponent {
 
     componentDidCatch(error) {
         this.setState({error})
+    }
+
+    componentDidUpdate(prevProps) {
+        const { isOpen, loadArticle, article } = this.props
+
+        if (!prevProps.isOpen && isOpen && !article.text) {
+            loadArticle(article.id)
+        }
+
     }
 
     toggleOpen = () => {
@@ -21,7 +31,7 @@ class Article extends PureComponent {
     }
 
     render() {
-        const { article: {title, text, comments}, isOpen } = this.props
+        const { article: {title, text, loading}, isOpen } = this.props
 
         console.log("render Article")
 
@@ -35,18 +45,23 @@ class Article extends PureComponent {
                 {
                     isOpen ?
                     <section>
-                        <p>{text}</p>
-                        {this.state.error ? null : <CommentList comments={comments} />}
+                        {loading ?
+                        <Loader /> :
+                        <>
+                            <p>{text}</p>
+                            <CommentList article={this.props.article} />
+                        </>}
                     </section> : null
                 }
             </div>
         )
     }
-}
+};
 
 export default connect(
     null,
     (dispatch) => ({
-        deleteArticle: (id) => dispatch(deleteArticle(id))
+        deleteArticle: (id) => dispatch(deleteArticle(id)),
+        loadArticle: (id) => dispatch(loadArticle(id))
     })
 )(Article)

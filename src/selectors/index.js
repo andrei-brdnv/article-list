@@ -1,13 +1,17 @@
 import { createSelector } from "reselect";
 
-export const filterSelector = (state) => state.filters
-export const articleSelector = (state) => state.articles
-export const commentSelector = (state) => state.comments
-export const idSelector = (_, ownProps) => ownProps.id
+export const filtersSelector = (state) => state.filters
+export const loadingSelector = (state) => state.articles.loading
+export const loadedSelector = (state) => state.articles.loaded
+export const articleMapSelector = (state) => state.articles.entities
+export const articlesSelector = createSelector(
+    articleMapSelector,
+    (articlesMap) => articlesMap.valueSeq().toArray()
+)
 
 export const filteredArticlesSelector = createSelector(
-    filterSelector,
-    articleSelector,
+    filtersSelector,
+    articlesSelector,
     (filters, articles) => {
         const {selected, dateRange: { from, to }} = filters
         console.log('filteredArticlesSelector')
@@ -24,8 +28,11 @@ export const filteredArticlesSelector = createSelector(
     }
 )
 
+export const commentSelector = (state) => state.comments
+export const idSelector = (_, ownProps) => ownProps.id
+
 export const createCommentsSelector = () => createSelector(
     commentSelector,
     idSelector,
-    (comments, id) => comments[id]
+    (comments, id) => comments.get(id)
 )

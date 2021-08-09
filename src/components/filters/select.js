@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import { connect } from "react-redux";
 import { changeSelection } from "../../ac";
+import { articlesSelector, filtersSelector } from "../../selectors";
 
 class SelectFilter extends Component {
     get optionsForSelect() {
@@ -27,10 +28,18 @@ class SelectFilter extends Component {
     }
 }
 
+const mapDispatchToPropsFunc = (dispatch) => {
+    return {
+        changeSelection: (selected) => {
+            dispatch(changeSelection(selected))
+        }
+    }
+}
+
 export default connect(
     state => ({
-        articles: state.articles,
-        selected: state.filters.selected,
+        articles: articlesSelector(state),
+        selectedOptions: filtersSelector(state).selected
     }),
-    {changeSelection}
+    mapDispatchToPropsFunc
 )(SelectFilter);
