@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import {filteredArticlesSelector, loadedSelector, loadingSelector} from "../../selectors";
 import { loadAllArticles } from "../../ac";
 import Loader from "../loader";
+import { NavLink } from "react-router-dom";
 
 class ArticleList extends Component {
     get articles() {
@@ -12,11 +13,12 @@ class ArticleList extends Component {
 
         return articles.map(article => (
             <li key={article.id}>
-                <Article
+                <NavLink to={`/articles/${article.id}`}>{article.title}</NavLink>
+                {/*<Article
                     article={article}
                     isOpen={article.id === openItemId}
                     toggleArticle={toggleOpenArticle}
-                />
+                />*/}
             </li>
         ))
     }

@@ -3,6 +3,7 @@ import CommentList from "../comment-list";
 import { connect } from "react-redux";
 import { deleteArticle, loadArticle } from "../../ac";
 import Loader from "../loader";
+import {articleSelector} from "../../selectors";
 
 class Article extends PureComponent {
     state = {
@@ -13,13 +14,11 @@ class Article extends PureComponent {
         this.setState({error})
     }
 
-    componentDidUpdate(prevProps) {
-        const { isOpen, loadArticle, article } = this.props
-
-        if (!prevProps.isOpen && isOpen && !article.text) {
-            loadArticle(article.id)
+    componentDidMount() {
+        const {loadArticle, article, id} = this.props
+        if (!article || (!article.text && !article.loading)) {
+            loadArticle(id)
         }
-
     }
 
     toggleOpen = () => {
@@ -31,35 +30,34 @@ class Article extends PureComponent {
     }
 
     render() {
-        const { article: {title, text, loading}, isOpen } = this.props
+        const { article } = this.props
 
         console.log("render Article")
-
+        if (!article) return null
         return (
             <div>
                 <h3>
-                    {title}
-                    <button onClick={this.toggleOpen}>{ isOpen ? "close" : "open" }</button>
+                    {article.title}
+                    {/*<button onClick={this.toggleOpen}>{ isOpen ? "close" : "open" }</button>*/}
                     <button onClick={this.handleDelete}>Delete</button>
                 </h3>
-                {
-                    isOpen ?
-                    <section>
-                        {loading ?
-                        <Loader /> :
+                <section>
+                    {article.loading ?
+                        <Loader/> :
                         <>
-                            <p>{text}</p>
-                            <CommentList article={this.props.article} />
+                            <p>{article.text}</p>
+                            <CommentList article={article}/>
                         </>}
-                    </section> : null
-                }
+                </section>
             </div>
         )
     }
 };
 
 export default connect(
-    null,
+    (state, ownProps) => ({
+        article: articleSelector(state, ownProps)
+    }),
     (dispatch) => ({
         deleteArticle: (id) => dispatch(deleteArticle(id)),
         loadArticle: (id) => dispatch(loadArticle(id))

@@ -5,7 +5,7 @@ import {
     LOAD_ALL_ARTICLES,
     START,
     SUCCESS,
-    FAIL, LOAD_ARTICLE
+    FAIL, LOAD_ARTICLE, LOAD_ARTICLE_COMMENTS
 } from "../constants";
 import { arrToMap } from "./utils";
 import { Map, fromJS, Record } from "immutable"
@@ -58,6 +58,20 @@ export default (articles = new ReducerState(), action) => {
             return articles.deleteIn(['entities', payload.id])
         case ADD_COMMENT:
             return articles.updateIn(['entities', payload.articleId, 'comments'], (comments) => comments.concat(randomId))
+
+        case LOAD_ARTICLE_COMMENTS + START:
+            return articles.setIn(['entities', payload.articleId, 'commentsLoading'], true)
+
+        case LOAD_ARTICLE_COMMENTS + SUCCESS:
+            return articles
+                .setIn(['entities', payload.articleId, 'commentsLoading'], false)
+                .setIn(['entities', payload.articleId, 'commentsLoaded'], true)
+
+        case LOAD_ARTICLE_COMMENTS + FAIL:
+            return articles
+                .setIn(['entities', payload.articleId, 'commentsLoading'], false)
+                .setIn(['entities', payload.articleId, 'commentsLoaded'], false)
+                .set('error', error)
         default:
             return articles
     }
