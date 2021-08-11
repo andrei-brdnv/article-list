@@ -8,16 +8,16 @@ class ArticlesPage extends Component {
         return (
             <div>
                 <ArticleList />
-                <Switch>
-                    <Route path={"/articles/:id"} render={this.getArticle} />
-                    <Route path={"/articles"} render={() => <h4>Please select an article</h4>}/>
-                </Switch>
+                <Route path={"/articles/:id"} children={this.getArticle} />
             </div>
         );
     }
 
     getArticle = ({ match }) => {
-        console.log(match.params)
+        if (!match) {
+            return <h3>Please select an article</h3>
+        }
+
         return <Article key={match.params.id} id={match.params.id} />
     }
 }

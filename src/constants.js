@@ -12,7 +12,10 @@ export const LOAD_ALL_ARTICLES = 'LOAD_ALL_ARTICLES'
 export const LOAD_ARTICLE = 'LOAD_ARTICLE'
 
 export const LOAD_ARTICLE_COMMENTS = 'LOAD_ARTICLE_COMMENTS'
+export const LOAD_COMMENTS_FOR_PAGE = 'LOAD_COMMENTS_FOR_PAGE'
 
 export const START = '_START'
 export const SUCCESS = '_SUCCESS'
 export const FAIL = '_FAIL'
+
+export const COMMENTS_PER_PAGE = 5

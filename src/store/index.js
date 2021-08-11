@@ -4,6 +4,8 @@ import logger from "../middleware/logger";
 import generateId from "../middleware/generate-id"
 import api from "../middleware/api"
 import thunk from "redux-thunk";
+import history from "../history";
+import { routerMiddleware } from "connected-react-router";
 
 const composeEnhancers =
     typeof window === 'object' &&
@@ -14,6 +16,7 @@ const composeEnhancers =
 
 const enhancer = composeEnhancers(
     applyMiddleware(
+        routerMiddleware(history),
         thunk,
         generateId,
         api,
@@ -21,6 +24,6 @@ const enhancer = composeEnhancers(
     ),
 );
 
-const store = createStore(reducer, enhancer)
+const store = createStore(reducer(history), enhancer)
 
 export default store
