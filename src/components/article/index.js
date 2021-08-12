@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { deleteArticle, loadArticle } from "../../ac";
 import Loader from "../loader";
 import {articleSelector} from "../../selectors";
+import i18n from "../i18n";
 
 class Article extends PureComponent {
     state = {
@@ -30,7 +31,7 @@ class Article extends PureComponent {
     }
 
     render() {
-        const { article } = this.props
+        const { article, t } = this.props
 
         console.log("render Article")
         if (!article) return null
@@ -39,7 +40,7 @@ class Article extends PureComponent {
                 <h3>
                     {article.title}
                     {/*<button onClick={this.toggleOpen}>{ isOpen ? "close" : "open" }</button>*/}
-                    <button onClick={this.handleDelete}>Delete</button>
+                    <button onClick={this.handleDelete}>{t('delete me')}</button>
                 </h3>
                 <section>
                     {article.loading ?
@@ -62,4 +63,4 @@ export default connect(
         deleteArticle: (id) => dispatch(deleteArticle(id)),
         loadArticle: (id) => dispatch(loadArticle(id))
     })
-)(Article)
+)(i18n(Article))
