@@ -30,12 +30,12 @@ class CommentList extends Component {
     }
 
     render() {
-        const { isOpen, toggleOpenItem, t } = this.props
+        const { isOpen, toggleOpenItem } = this.props
 
         return (
             <div>
                 <button onClick={toggleOpenItem}>
-                    {t(isOpen ? 'hide comments' : 'show comments')}
+                    {isOpen ? 'hide comments' : 'show comments'}
                 </button>
                 <AuthConsumer>
                     {(contextValue) => <h3>{contextValue.contextUserName}</h3>}
@@ -53,8 +53,7 @@ class CommentList extends Component {
                 commentsLoading,
                 commentsLoaded
             },
-            isOpen,
-            t
+            isOpen
         } = this.props
 
         if (!isOpen) return null;
@@ -70,7 +69,7 @@ class CommentList extends Component {
                 ))}
             </ul>
         ) : (
-            <h3>{t('No comments yet')}</h3>
+            <h3>{'No comments yet'}</h3>
         )
         return <div>
             <CommentForm articleId={id}/>
@@ -82,4 +81,4 @@ class CommentList extends Component {
 export default connect(
     null,
     { loadArticleComments }
-)(toggleOpen(i18n(CommentList)));
+)(toggleOpen(CommentList));

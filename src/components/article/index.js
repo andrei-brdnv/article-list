@@ -40,7 +40,7 @@ class Article extends PureComponent {
                 <h3>
                     {article.title}
                     {/*<button onClick={this.toggleOpen}>{ isOpen ? "close" : "open" }</button>*/}
-                    <button onClick={this.handleDelete}>{t('delete me')}</button>
+                    <button onClick={this.handleDelete}>Delete</button>
                 </h3>
                 <section>
                     {article.loading ?
@@ -63,4 +63,4 @@ export default connect(
         deleteArticle: (id) => dispatch(deleteArticle(id)),
         loadArticle: (id) => dispatch(loadArticle(id))
     })
-)(i18n(Article))
+)(Article)
